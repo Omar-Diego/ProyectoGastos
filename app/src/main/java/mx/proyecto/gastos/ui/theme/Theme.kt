@@ -29,10 +29,10 @@ private val LightColorScheme = lightColorScheme(
     onSecondary = Color.White,
 
     background = Background,
-    onBackground = Text,
+    onBackground = TextColor,
 
     surface = Background,
-    onSurface = Text,
+    onSurface = TextColor,
 
     error = Rojo,
 

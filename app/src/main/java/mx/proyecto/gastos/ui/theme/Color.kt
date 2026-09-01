@@ -11,7 +11,7 @@ val Background = Color(0xFFFFFFFF)
 val Verde = Color(0xFF0EAF70)
 val Rojo = Color(0xFFC42830)
 
-val Text = Color(0xFF1E1E1E)
+val TextColor = Color(0xFF1E1E1E)
 
 val CategoriaTransporte = Color(0xFF76B5EB)
 val CategoriaSalud = Color(0xFFEB5E5A)
