@@ -16,5 +16,6 @@ enum class Categoria(val etiqueta: String) {
     CASA(etiqueta = "Casa"),
     OCIO(etiqueta = "Ocio"),
     SALUD(etiqueta = "Salud"),
+    SALARIO(etiqueta = "Salario"),
     OTRO(etiqueta = "Otro")
 }
