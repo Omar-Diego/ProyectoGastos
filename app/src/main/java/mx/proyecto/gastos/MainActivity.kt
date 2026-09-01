@@ -11,37 +11,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import mx.proyecto.gastos.core.repo.MovimientoRepository
+import mx.proyecto.gastos.core.repo.RepositorioDePrueba
+import mx.proyecto.gastos.nav.App
 import mx.proyecto.gastos.ui.theme.ProyectoGastos
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val repositorio: MovimientoRepository = RepositorioDePrueba()
         setContent {
             ProyectoGastos {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                App(repositorio)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ProyectoGastos {
-        Greeting("Android")
     }
 }
