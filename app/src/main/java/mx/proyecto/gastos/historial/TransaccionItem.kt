@@ -6,12 +6,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocalHospital
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,8 +18,6 @@ import androidx.compose.ui.unit.sp
 import mx.proyecto.gastos.core.modelo.Categoria
 import mx.proyecto.gastos.core.modelo.Movimiento
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
-import mx.proyecto.gastos.historial.TipoTransaccion
-import mx.proyecto.gastos.historial.Transaccion
 import mx.proyecto.gastos.ui.theme.CategoriaCasa
 import mx.proyecto.gastos.ui.theme.CategoriaComida
 import mx.proyecto.gastos.ui.theme.CategoriaOcio
@@ -35,8 +27,8 @@ import mx.proyecto.gastos.ui.theme.CategoriaSalud
 import mx.proyecto.gastos.ui.theme.CategoriaTransporte
 import mx.proyecto.gastos.ui.theme.Rojo
 import mx.proyecto.gastos.ui.theme.Verde
+import mx.proyecto.gastos.ui.theme.icono
 import java.time.format.DateTimeFormatter
-import java.util.*
 import java.util.Locale // Para los meses en español
 
 
@@ -49,7 +41,7 @@ fun TransaccionItem(
     val formatoFecha = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale("es", "ES"))
 
     //Funcion para determinar color
-    val colorIcono = when(transaccion.categoria){
+    val colorIcono = when (transaccion.categoria) {
         Categoria.COMIDA -> CategoriaComida
         Categoria.TRANSPORTE -> CategoriaTransporte
         Categoria.CASA -> CategoriaCasa
@@ -59,17 +51,9 @@ fun TransaccionItem(
         else -> CategoriaOtro
     }
 
-    //Funcion para determinar icono
-    val iconoMovimiento = when(transaccion.categoria){
-        Categoria.COMIDA -> Icons.Default.Restaurant
-        Categoria.TRANSPORTE -> Icons.Default.DirectionsCar
-        Categoria.CASA -> Icons.Default.Home
-        Categoria.OCIO -> Icons.Default.SportsEsports
-        Categoria.SALUD -> Icons.Default.LocalHospital
-        Categoria.SALARIO -> Icons.Default.LocalHospital
-        else -> Icons.Filled.MoreHoriz
-    }
-
+    // El icono es el mismo que muestra Registro al elegir la categoria
+    // (definido en ui/theme/Iconos.kt para que ambas pantallas coincidan).
+    val iconoMovimiento = transaccion.categoria.icono
 
     Card(
         modifier = Modifier
@@ -121,7 +105,7 @@ fun TransaccionItem(
                 )
             }
 
-            // 3. Monto (Derecha) con color según tipo y subrayado
+            // 3. Monto (Derecha) con color según tipo
             val montoEnPesos = transaccion.montoCentavos.toDouble() / 100.0
 
             val montoTexto = if (transaccion.tipo == TipoMovimiento.GASTO) {
@@ -137,14 +121,10 @@ fun TransaccionItem(
                     text = montoTexto,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = montoColor,
-                    // Recreamos el subrayado de tu boceto
-                    style = LocalTextStyle.current.copy(
-                        textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline
-                    )
+                    color = montoColor
                 )
             }
-            
+
             // 4. Botón de borrar
             IconButton(onClick = onDelete) {
                 Icon(
