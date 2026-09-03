@@ -16,13 +16,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.DirectionsCar
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocalHospital
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -39,6 +32,7 @@ import mx.proyecto.gastos.core.modelo.Categoria
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
 import mx.proyecto.gastos.ui.theme.Background
 import mx.proyecto.gastos.ui.theme.color
+import mx.proyecto.gastos.ui.theme.icono
 
 @Composable
 fun PasoCategoria(
@@ -168,14 +162,3 @@ private fun TarjetaCategoria(
         }
     }
 }
-
-private val Categoria.icono: ImageVector
-    get() = when (this) {
-        Categoria.COMIDA -> Icons.Filled.Restaurant
-        Categoria.TRANSPORTE -> Icons.Filled.DirectionsCar
-        Categoria.CASA -> Icons.Filled.Home
-        Categoria.OCIO -> Icons.Filled.SportsEsports
-        Categoria.SALUD -> Icons.Filled.LocalHospital
-        Categoria.SALARIO -> Icons.Filled.AccountBalance
-        Categoria.OTRO -> Icons.Filled.MoreHoriz
-    }
