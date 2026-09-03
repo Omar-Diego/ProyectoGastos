@@ -66,7 +66,9 @@ fun App(repositorio: MovimientoRepository){
                     },
                 )
             }
-            composable(route = Destino.HISTORIAL.ruta) {HistorialScreen()}
+            composable(route = Destino.HISTORIAL.ruta) {
+                HistorialScreen(repositorio = repositorio)
+            }
         }
     }
 }

@@ -24,8 +24,6 @@ import androidx.compose.ui.unit.sp
 import mx.proyecto.gastos.core.modelo.Categoria
 import mx.proyecto.gastos.core.modelo.Movimiento
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
-import mx.proyecto.gastos.historial.TipoTransaccion
-import mx.proyecto.gastos.historial.Transaccion
 import mx.proyecto.gastos.ui.theme.CategoriaCasa
 import mx.proyecto.gastos.ui.theme.CategoriaComida
 import mx.proyecto.gastos.ui.theme.CategoriaOcio
