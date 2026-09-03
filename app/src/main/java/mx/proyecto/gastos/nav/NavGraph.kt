@@ -3,6 +3,7 @@ package mx.proyecto.gastos.nav
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
@@ -39,7 +40,7 @@ import mx.proyecto.gastos.ui.theme.TextColor
 enum class Destino(val ruta: String, val etiqueta: String, val icono: ImageVector){
     RESUMEN(ruta = "resumen", etiqueta = "Resumen",  icono = Icons.Filled.Home),
     REGISTRO(ruta = "registro", etiqueta = "Registro", icono = Icons.Filled.Add),
-    HISTORIAL(ruta = "historial", etiqueta = "Historial", icono = Icons.AutoMirrored.Filled.List)
+    HISTORIAL(ruta = "historial", etiqueta = "Historial", icono = Icons.Outlined.History)
 }
 
 @Composable

@@ -12,19 +12,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import mx.proyecto.gastos.core.repo.MovimientoRepository
-import mx.proyecto.gastos.core.repo.RepositorioDePrueba
 import mx.proyecto.gastos.nav.App
 import mx.proyecto.gastos.ui.theme.ProyectoGastos
+import mx.proyecto.gastos.core.db.AppDatabase
+import mx.proyecto.gastos.core.repo.MovimientoRepositoryRoom
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val repositorio: MovimientoRepository = RepositorioDePrueba()
+        val db = AppDatabase.getInstance(this)
+        val repositorio: MovimientoRepository = MovimientoRepositoryRoom(db.movimientoDao())
         setContent {
             ProyectoGastos {
                 App(repositorio)
             }
         }
+
     }
 }
