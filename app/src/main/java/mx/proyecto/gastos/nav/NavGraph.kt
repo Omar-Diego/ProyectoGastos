@@ -54,7 +54,7 @@ fun App(repositorio: MovimientoRepository){
             startDestination = Destino.RESUMEN.ruta,
             modifier = Modifier.padding(padding)
         ) {
-            composable(route = Destino.RESUMEN.ruta) {ResumenScreen()}
+            composable(route = Destino.RESUMEN.ruta) {ResumenScreen(repositorio)}
             composable(route = Destino.REGISTRO.ruta) {
                 RegistroScreen(
                     repositorio = repositorio,

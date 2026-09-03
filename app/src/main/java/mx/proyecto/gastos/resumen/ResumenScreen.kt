@@ -36,7 +36,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import mx.proyecto.gastos.core.repo.MovimientoRepository
 import mx.proyecto.gastos.core.repo.RepositorioDePrueba
+import mx.proyecto.gastos.ui.components.EmptyState
 import mx.proyecto.gastos.ui.theme.AzulClaro
 import mx.proyecto.gastos.ui.theme.AzulPrincipal
 import mx.proyecto.gastos.ui.theme.Rojo
@@ -54,10 +56,11 @@ private val MESES_COMPLETOS = listOf(
 
 @Composable
 fun ResumenScreen(
+    repositorio: MovimientoRepository,
     onIrARegistro: () -> Unit = {},
     viewModel: ResumenViewModel = viewModel(
         factory = viewModelFactory {
-            initializer { ResumenViewModel(RepositorioDePrueba()) }
+            initializer { ResumenViewModel(repositorio) }
         }
     )
 ) {
@@ -67,57 +70,55 @@ fun ResumenScreen(
 
 @Composable
 private fun ResumenContenido(resumen: ResumenMes) {
+    val esVacio = resumen.gastadoMesCentavos == 0L && resumen.ingresosMesCentavos == 0L
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 16.dp)
     ) {
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(16.dp))
         Encabezado()
-        Spacer(Modifier.height(20.dp))
-        TarjetaBalance(resumen)
-        Spacer(Modifier.height(20.dp))
-        TarjetaHistorial(resumen.historialSeisMeses)
-        Spacer(Modifier.height(20.dp))
-        TarjetaCategorias(resumen.gastosPorCategoria, resumen.gastadoMesCentavos)
-        Spacer(Modifier.height(24.dp))
+        
+        if (esVacio) {
+            EmptyState(
+                title = "Sin movimientos aún",
+                description = "Registra tu primer ingreso o gasto para ver tu resumen aquí.",
+                modifier = Modifier.weight(1f)
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Spacer(Modifier.height(20.dp))
+                TarjetaBalance(resumen)
+                Spacer(Modifier.height(20.dp))
+                TarjetaHistorial(resumen.historialSeisMeses)
+                Spacer(Modifier.height(20.dp))
+                TarjetaCategorias(resumen.gastosPorCategoria, resumen.gastadoMesCentavos)
+                Spacer(Modifier.height(24.dp))
+            }
+        }
     }
 }
 
 @Composable
 private fun Encabezado() {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column {
-            Text(
-                text = "Resumen",
-                style = MaterialTheme.typography.titleLarge,
-                color = TextColor
-            )
-            Text(
-                text = "Aqui tienes el resumen de tus finanzas.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextColor.copy(alpha = 0.6f)
-            )
-        }
-        Box(
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .background(TextColor.copy(alpha = 0.08f)),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Person,
-                contentDescription = null,
-                tint = TextColor.copy(alpha = 0.4f)
-            )
-        }
+    Column {
+        Text(
+            text = "Resumen",
+            style = MaterialTheme.typography.titleLarge,
+            color = TextColor
+        )
+        Text(
+            text = "Aqui tienes el resumen de tus finanzas.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextColor.copy(alpha = 0.6f),
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 
