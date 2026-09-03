@@ -3,6 +3,7 @@ package mx.proyecto.gastos.nav
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
@@ -39,7 +40,7 @@ import mx.proyecto.gastos.ui.theme.TextColor
 enum class Destino(val ruta: String, val etiqueta: String, val icono: ImageVector){
     RESUMEN(ruta = "resumen", etiqueta = "Resumen",  icono = Icons.Filled.Home),
     REGISTRO(ruta = "registro", etiqueta = "Registro", icono = Icons.Filled.Add),
-    HISTORIAL(ruta = "historial", etiqueta = "Historial", icono = Icons.AutoMirrored.Filled.List)
+    HISTORIAL(ruta = "historial", etiqueta = "Historial", icono = Icons.Outlined.History)
 }
 
 @Composable
@@ -54,7 +55,17 @@ fun App(repositorio: MovimientoRepository){
             modifier = Modifier.padding(padding)
         ) {
             composable(route = Destino.RESUMEN.ruta) {ResumenScreen()}
-            composable(route = Destino.REGISTRO.ruta) {RegistroScreen()}
+            composable(route = Destino.REGISTRO.ruta) {
+                RegistroScreen(
+                    repositorio = repositorio,
+                    alGuardar = {
+                        navController.navigate(Destino.RESUMEN.ruta) {
+                            popUpTo(Destino.REGISTRO.ruta) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                )
+            }
             composable(route = Destino.HISTORIAL.ruta) {HistorialScreen()}
         }
     }
