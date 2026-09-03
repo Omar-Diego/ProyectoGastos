@@ -1,15 +1,39 @@
 package mx.proyecto.gastos.registro
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import mx.proyecto.gastos.core.repo.MovimientoRepository
+
+private enum class Paso { MONTO, CATEGORIA }
 
 @Composable
-fun RegistroScreen(){
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Text("REGISTRO")
+fun RegistroScreen(
+    repositorio: MovimientoRepository,
+    alGuardar: () -> Unit,
+) {
+    val vm: RegistroViewModel = viewModel { RegistroViewModel(repositorio) }
+    var paso by rememberSaveable { mutableStateOf(Paso.MONTO) }
+
+    when (paso) {
+        Paso.MONTO -> PasoMonto(
+            montoCentavos = vm.montoCentavos,
+            tipo = vm.tipo,
+            montoValido = vm.montoValido,
+            alPulsarDigito = vm::pulsarDigito,
+            alBorrar = vm::borrar,
+            alCambiarTipo = vm::cambiarTipo,
+            alContinuar = { paso = Paso.CATEGORIA },
+        )
+        Paso.CATEGORIA -> PasoCategoria(
+            tipo = vm.tipo,
+            alElegir = { categoria ->
+                vm.guardar(categoria, alTerminar = alGuardar)
+            },
+            alVolver = { paso = Paso.MONTO },
+        )
     }
 }
