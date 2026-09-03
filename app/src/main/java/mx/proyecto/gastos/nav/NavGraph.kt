@@ -54,7 +54,17 @@ fun App(repositorio: MovimientoRepository){
             modifier = Modifier.padding(padding)
         ) {
             composable(route = Destino.RESUMEN.ruta) {ResumenScreen()}
-            composable(route = Destino.REGISTRO.ruta) {RegistroScreen()}
+            composable(route = Destino.REGISTRO.ruta) {
+                RegistroScreen(
+                    repositorio = repositorio,
+                    alGuardar = {
+                        navController.navigate(Destino.RESUMEN.ruta) {
+                            popUpTo(Destino.REGISTRO.ruta) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
+                )
+            }
             composable(route = Destino.HISTORIAL.ruta) {HistorialScreen()}
         }
     }
