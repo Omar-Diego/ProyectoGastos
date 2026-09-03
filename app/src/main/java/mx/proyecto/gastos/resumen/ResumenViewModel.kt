@@ -1,6 +1,5 @@
 package mx.proyecto.gastos.resumen
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -9,17 +8,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import mx.proyecto.gastos.core.repo.MovimientoRepository
 import java.time.LocalDate
-import java.time.YearMonth
 
 class ResumenViewModel(
     private val repositorio: MovimientoRepository,
     private val hoy: LocalDate = LocalDate.now()
 ) : ViewModel() {
 
-    private val mes: YearMonth = YearMonth.from(hoy)
-
     val estado: StateFlow<ResumenMes> =
-        repositorio.observarMes(mes)
+        repositorio.observarTodos()
             .map { movimientos -> CalculadoraResumen.calcular(movimientos, hoy) }
             .stateIn(
                 scope = viewModelScope,
