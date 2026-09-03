@@ -12,9 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import mx.proyecto.gastos.core.modelo.Categoria
 import mx.proyecto.gastos.core.modelo.Movimiento
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
@@ -94,13 +92,12 @@ fun TransaccionItem(
             ) {
                 Text(
                     text = transaccion.categoria.etiqueta,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = Color.Black
                 )
                 Text(
                     text = transaccion.fecha.format(formatoFecha),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
             }
@@ -119,8 +116,7 @@ fun TransaccionItem(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = montoTexto,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
                     color = montoColor
                 )
             }
@@ -130,7 +126,7 @@ fun TransaccionItem(
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Borrar",
-                    tint = Color.Red,
+                    tint = Rojo,
                     modifier = Modifier.size(24.dp)
                 )
             }

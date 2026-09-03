@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,6 +24,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import mx.proyecto.gastos.core.modelo.Movimiento
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
 import mx.proyecto.gastos.core.repo.MovimientoRepository
+import mx.proyecto.gastos.ui.components.EmptyState
+import mx.proyecto.gastos.ui.theme.AzulPrincipal
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -161,26 +164,11 @@ fun HistorialScreen(repositorio: MovimientoRepository) {
                 }
             }
         } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "No hay movimientos",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "Empieza agregando movimientos en la pestaña \"Registro\"",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Center
-                )
-            }
+            EmptyState(
+                title = "Sin movimientos aún",
+                description = "Registra tu primer ingreso o gasto para ver tu historial aquí.",
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
