@@ -22,7 +22,7 @@ object CalculadoraResumen {
         val gastos = movimientosDelMes.filter { it.tipo == TipoMovimiento.GASTO }
         val ingresos = movimientosDelMes.filter { it.tipo == TipoMovimiento.INGRESO }
 
-        // Todo el gasto del mes
+
         val gastadoMes = gastos.sumOf { it.montoCentavos }
 
 
