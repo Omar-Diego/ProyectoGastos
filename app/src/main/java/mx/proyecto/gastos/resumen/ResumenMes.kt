@@ -10,23 +10,41 @@ data class ResumenMes(
     val disponibleCentavos: Long,
     val variacionBalanceVsMesAnteriorPorcentaje: Double?,
     val historialSeisMeses: List<ResumenMensual>,
-    val gastosPorCategoria: List<GastoPorCategoria>
+    val semanasMes: List<ResumenSemanal>,
+    val gastosPorCategoria: List<GastoPorCategoria>,
+    val gastosDiarios: List<GastoDiario>,
+    val gastoPromedioDiarioCentavos: Long
 ) {
     companion object {
         val VACIO = ResumenMes(
-            gastadoHoyCentavos = 0L, // cuanto gastaste hoy en centavos
-            gastadoMesCentavos = 0L, // cuanto gastaste en el mes completo en centavos
-            ingresosMesCentavos = 0L, // cuanto ingresaste en el mes
-            disponibleCentavos = 0L, // presupuesto - lo que se gastó "balance total"
-            variacionBalanceVsMesAnteriorPorcentaje = null, // cuanto subió o bajo el disponible vs el mes pasado, en %
-            historialSeisMeses = emptyList(), // lista con los datos de los ultimos 6 meses, para la gráfica de barras
-            gastosPorCategoria = emptyList() // lista con cuánto gastaste en cada categoría
+            gastadoHoyCentavos = 0L,
+            gastadoMesCentavos = 0L,
+            ingresosMesCentavos = 0L,
+            disponibleCentavos = 0L,
+            variacionBalanceVsMesAnteriorPorcentaje = null,
+            historialSeisMeses = emptyList(),
+            semanasMes = emptyList(),
+            gastosPorCategoria = emptyList(),
+            gastosDiarios = emptyList(),
+            gastoPromedioDiarioCentavos = 0L
         )
     }
 }
 
+data class GastoDiario(
+    val dia: Int,
+    val montoCentavos: Long
+)
+
 data class ResumenMensual(
     val mes: YearMonth,
+    val ingresosCentavos: Long,
+    val gastosCentavos: Long
+)
+
+data class ResumenSemanal(
+    val semana: Int,
+    val etiqueta: String,
     val ingresosCentavos: Long,
     val gastosCentavos: Long
 )

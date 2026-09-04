@@ -222,3 +222,71 @@ private fun nombreCategoria(categoria: Categoria): String =
     categoria.name.lowercase().replaceFirstChar { it.uppercase() }
 
 private fun Double.roundToInt(): Int = round(this).toInt()
+
+@Composable
+internal fun GraficaBarrasSemanal(semanas: List<ResumenSemanal>) {
+    val maximoReal = semanas
+        .flatMap { listOf(it.ingresosCentavos, it.gastosCentavos) }
+        .maxOrNull()
+        ?.takeIf { it > 0L } ?: 100_00L
+
+    val techoEje = techoLimpio(maximoReal)
+    val etiquetasEje = listOf(techoEje, techoEje * 3 / 4, techoEje / 2, techoEje / 4, 0L)
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .height(140.dp)
+                .padding(end = 6.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            etiquetasEje.forEach { valor ->
+                Text(
+                    text = formatearEje(valor),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TextColor.copy(alpha = 0.4f)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .height(140.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            semanas.forEach { semanaResumen ->
+                Column(
+                    modifier = Modifier.weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Barra(
+                            fraccion = semanaResumen.ingresosCentavos.toFloat() / techoEje.toFloat(),
+                            color = Verde
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Barra(
+                            fraccion = semanaResumen.gastosCentavos.toFloat() / techoEje.toFloat(),
+                            color = Rojo
+                        )
+                    }
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = semanaResumen.etiqueta,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TextColor.copy(alpha = 0.5f)
+                    )
+                }
+            }
+        }
+    }
+}
