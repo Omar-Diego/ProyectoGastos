@@ -2,8 +2,11 @@ package mx.proyecto.gastos.resumen
 
 import mx.proyecto.gastos.core.modelo.Movimiento
 import mx.proyecto.gastos.core.modelo.TipoMovimiento
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.temporal.WeekFields
+import java.util.Locale
 
 object CalculadoraResumen {
 
@@ -63,6 +66,35 @@ object CalculadoraResumen {
             }
             .sortedByDescending { it.montoCentavos }
 
+        // Gastos diarios del mes actual
+        val gastosDiarios = gastosMesActual
+            .groupBy { it.fecha.dayOfMonth }
+            .map { (dia, movimientos) ->
+                GastoDiario(dia, movimientos.sumOf { it.montoCentavos })
+            }
+            .sortedBy { it.dia }
+
+        // Semanas del mes actual
+        val weekFields = WeekFields.of(Locale("es", "MX"))
+        val primeraSemana = movimientosMesActual.minOfOrNull { it.fecha.get(weekFields.weekOfWeekBasedYear()) } ?: 0
+        val semanasMes = movimientosMesActual
+            .groupBy { it.fecha.get(weekFields.weekOfWeekBasedYear()) - primeraSemana }
+            .map { (semanaIdx, movimientos) ->
+                val semanaNum = semanaIdx + 1
+                val etiqueta = "Sem $semanaNum"
+                ResumenSemanal(
+                    semana = semanaNum,
+                    etiqueta = etiqueta,
+                    ingresosCentavos = movimientos.filter { it.tipo == TipoMovimiento.INGRESO }.sumOf { it.montoCentavos },
+                    gastosCentavos = movimientos.filter { it.tipo == TipoMovimiento.GASTO }.sumOf { it.montoCentavos }
+                )
+            }
+            .sortedBy { it.semana }
+
+        // Gasto promedio diario
+        val diasTranscurridos = hoy.dayOfMonth
+        val gastoPromedioDiario = if (diasTranscurridos > 0) gastadoMes / diasTranscurridos else 0L
+
         return ResumenMes(
             gastadoHoyCentavos = gastadoHoy,
             gastadoMesCentavos = gastadoMes,
@@ -70,7 +102,10 @@ object CalculadoraResumen {
             disponibleCentavos = disponible,
             variacionBalanceVsMesAnteriorPorcentaje = variacion,
             historialSeisMeses = historial,
-            gastosPorCategoria = gastosPorCategoria
+            semanasMes = semanasMes,
+            gastosPorCategoria = gastosPorCategoria,
+            gastosDiarios = gastosDiarios,
+            gastoPromedioDiarioCentavos = gastoPromedioDiario
         )
     }
 }

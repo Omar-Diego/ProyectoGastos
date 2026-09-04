@@ -78,6 +78,7 @@ private fun ResumenContenido(resumen: ResumenMes) {
     ) {
         Spacer(Modifier.height(16.dp))
         Encabezado()
+        Spacer(Modifier.height(24.dp))
         
         if (esVacio) {
             EmptyState(
@@ -91,12 +92,14 @@ private fun ResumenContenido(resumen: ResumenMes) {
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(16.dp))
                 TarjetaBalance(resumen)
-                Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(16.dp))
                 TarjetaHistorial(resumen.historialSeisMeses)
-                Spacer(Modifier.height(20.dp))
-                TarjetaCategorias(resumen.gastosPorCategoria, resumen.gastadoMesCentavos)
+                if (resumen.gastosPorCategoria.isNotEmpty()) {
+                    Spacer(Modifier.height(16.dp))
+                    TarjetaCategorias(resumen.gastosPorCategoria, resumen.gastadoMesCentavos)
+                }
                 Spacer(Modifier.height(24.dp))
             }
         }
@@ -184,6 +187,7 @@ private fun TarjetaBalance(resumen: ResumenMes) {
                 monto = resumen.gastadoMesCentavos
             )
         }
+
     }
 }
 
@@ -229,6 +233,36 @@ private fun TarjetaHistorial(historial: List<ResumenMensual>) {
         )
         Spacer(Modifier.height(16.dp))
         GraficaBarras(historial)
+        Spacer(Modifier.height(16.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
+            LeyendaPunto(color = Verde, texto = "INGRESOS")
+            LeyendaPunto(color = Rojo, texto = "GASTOS")
+        }
+    }
+}
+
+@Composable
+private fun TarjetaSemanal(semanas: List<ResumenSemanal>) {
+    val hoy = LocalDate.now()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(24.dp))
+            .background(Color.White)
+            .padding(20.dp)
+    ) {
+        Text(
+            text = "Ingresos vs gastos por semana",
+            style = MaterialTheme.typography.titleMedium,
+            color = TextColor
+        )
+        Text(
+            text = "${MESES_COMPLETOS[hoy.monthValue - 1]} ${hoy.year}",
+            style = MaterialTheme.typography.bodySmall,
+            color = TextColor.copy(alpha = 0.5f)
+        )
+        Spacer(Modifier.height(16.dp))
+        GraficaBarrasSemanal(semanas)
         Spacer(Modifier.height(16.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
             LeyendaPunto(color = Verde, texto = "INGRESOS")
