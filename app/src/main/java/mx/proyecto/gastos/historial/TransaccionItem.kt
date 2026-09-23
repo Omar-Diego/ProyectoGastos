@@ -59,7 +59,7 @@ fun TransaccionItem(
             .padding(vertical = 4.dp), // Espacio entre tarjetas
         shape = RoundedCornerShape(12.dp), // Bordes redondeados como tu dibujo
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFF0F0F0) // Un gris muy claro para el fondo de la tarjeta
+            containerColor = MaterialTheme.colorScheme.surfaceVariant // Color adaptativo para modo claro/oscuro
         )
     ) {
         Row(
@@ -93,12 +93,12 @@ fun TransaccionItem(
                 Text(
                     text = transaccion.categoria.etiqueta,
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = transaccion.fecha.format(formatoFecha),
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             }
 

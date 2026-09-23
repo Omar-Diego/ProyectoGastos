@@ -30,7 +30,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import mx.proyecto.gastos.core.modelo.Categoria
 import mx.proyecto.gastos.ui.theme.Rojo
-import mx.proyecto.gastos.ui.theme.TextColor
 import mx.proyecto.gastos.ui.theme.Verde
 import mx.proyecto.gastos.ui.theme.color
 import kotlin.math.ceil
@@ -56,7 +55,7 @@ internal fun LeyendaPunto(color: Color, texto: String) {
         Text(
             text = texto,
             style = MaterialTheme.typography.labelMedium,
-            color = TextColor.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
     }
 }
@@ -83,7 +82,7 @@ internal fun GraficaBarras(historial: List<ResumenMensual>) {
                 Text(
                     text = formatearEje(valor),
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextColor.copy(alpha = 0.4f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                 )
             }
         }
@@ -121,7 +120,7 @@ internal fun GraficaBarras(historial: List<ResumenMensual>) {
                     Text(
                         text = MESES_ABREVIADOS[mesResumen.mes.monthValue - 1],
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextColor.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                 }
             }
@@ -182,12 +181,12 @@ internal fun Donut(gastosPorCategoria: List<GastoPorCategoria>, totalCentavos: L
             Text(
                 text = "TOTAL:",
                 style = MaterialTheme.typography.labelMedium,
-                color = TextColor.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
             Text(
                 text = formatearMoneda(totalCentavos),
                 style = MaterialTheme.typography.titleSmall,
-                color = TextColor,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
         }
@@ -207,13 +206,13 @@ internal fun LeyendaCategoria(item: GastoPorCategoria) {
         Text(
             text = nombreCategoria(item.categoria),
             style = MaterialTheme.typography.bodyMedium,
-            color = TextColor.copy(alpha = 0.8f),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
             modifier = Modifier.width(90.dp)
         )
         Text(
             text = "${item.porcentaje.roundToInt()}%",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextColor
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -245,7 +244,7 @@ internal fun GraficaBarrasSemanal(semanas: List<ResumenSemanal>) {
                 Text(
                     text = formatearEje(valor),
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextColor.copy(alpha = 0.4f)
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                 )
             }
         }
@@ -283,7 +282,7 @@ internal fun GraficaBarrasSemanal(semanas: List<ResumenSemanal>) {
                     Text(
                         text = semanaResumen.etiqueta,
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextColor.copy(alpha = 0.5f)
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     )
                 }
             }

@@ -138,7 +138,7 @@ private fun TarjetaCategoria(
         onClick = onClick,
         modifier = modifier,
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(containerColor = Background),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
     ) {
         Column(
@@ -157,6 +157,7 @@ private fun TarjetaCategoria(
             Text(
                 text = texto,
                 style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(top = 12.dp),
             )
         }

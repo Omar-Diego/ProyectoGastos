@@ -12,19 +12,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = AzulPrincipal,
+    primary = AzulOscuroPrincipal,
     onPrimary = Color.White,
-    primaryContainer = AzulClaro,
+    primaryContainer = AzulOscuroSecundario,
     onPrimaryContainer = Color.White,
 
-    secondary = AzulClaro,
-    onSecondary = Color.White,
+    secondary = AzulOscuroSecundario,
+    onSecondary = Subtitulos,
 
-    background = Background,
-    onBackground = TextColor,
+    background = BlackBackground,
+    onBackground = Color.White,
 
-    surface = Background,
-    onSurface = TextColor,
+    surface = BlackBackground,
+    onSurface = Color.White,
 
     error = Rojo,
 
