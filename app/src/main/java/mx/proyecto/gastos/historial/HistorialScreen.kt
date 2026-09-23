@@ -86,100 +86,107 @@ fun HistorialScreen(repositorio: MovimientoRepository) {
         )
     }
 
-    // La barra de navegacion inferior NO se dibuja aqui: vive en NavGraph.kt (App),
-    // que ya envuelve esta pantalla con su Scaffold y su bottomBar. Aqui solo se pinta
-    // el contenido de la pantalla sobre el fondo blanco del boceto.
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.White),
+        contentAlignment = Alignment.Center
     ) {
-        // 1. Cabecera (Header)
+        val isTablet = maxWidth >= 600.dp
+        /*BoxWithConstraints mide automáticamente el espacio disponible (maxWidth).
+•       Si la pantalla es una tablet o pantalla ancha (maxWidth >= 600.dp), se le aplica un ancho máximo de 520.dp y se centra.
+        Si es un teléfono, ocupa todo el ancho (fillMaxWidth).*/
+
+        //Responsive (La barra de navegacion vive en otra parte)
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .fillMaxSize()
+                // En teléfonos usa el 100%, en tablets se limita a 520dp máximo y se centra
+                .then(
+                    if (isTablet) Modifier.widthIn(max = 520.dp)
+                    else Modifier.fillMaxWidth()
+                )
         ) {
-            Text(
-                text = "Historial",
-                style = MaterialTheme.typography.titleLarge,
-                color = Color.Black
-            )
-            Text(
-                text = "Todos tus movimientos en un lugar.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-
-        //Solo mostramos los filtros si hay transacciones
-        if (todasLasTransacciones.isNotEmpty()) {
-            HistorialFiltros(
-                filtroSeleccionado = filtroSeleccionado
-            ) { nuevoFiltro -> filtroSeleccionado = nuevoFiltro }
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-        //Si la lista no esta vacia
-        if (transaccionesFiltradas.isNotEmpty()) {
-            // 4. Lista de Transacciones (LazyColumn es como un RecyclerView)
-            LazyColumn(
+            // 1. Cabecera (Header)
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f), // Ocupa el espacio restante hasta la barra inferior
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                    .padding(16.dp)
             ) {
-                // Recorremos cada grupo (mes y su lista de movimientos)
-                transaccionesAgrupadas.forEach { (mes, movimientosDelMes) ->
-                    // 1. El encabezado con el mes
-                    item(key = mes) {
-                        Text(
-                            text = mes.replaceFirstChar { it.uppercase() },
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.DarkGray,
-                            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
-                        )
-                    }
+                Text(
+                    text = "Historial",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.Black
+                )
+                Text(
+                    text = "Todos tus movimientos en un lugar.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
 
-                    // 2. Las transacciones de ese mes
-                    items(movimientosDelMes, key = { it.id }) { movimiento ->
-                        TransaccionItem(
-                            transaccion = movimiento,
-                            onDelete = {
-                                transaccionAEliminar = movimiento
-                                showConfirmation = true
-                            }
-                        )
+            if (todasLasTransacciones.isNotEmpty()) {
+                HistorialFiltros(
+                    filtroSeleccionado = filtroSeleccionado
+                ) { nuevoFiltro -> filtroSeleccionado = nuevoFiltro }
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
+            if (transaccionesFiltradas.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                ) {
+                    transaccionesAgrupadas.forEach { (mes, movimientosDelMes) ->
+                        item(key = mes) {
+                            Text(
+                                text = mes.replaceFirstChar { it.uppercase() },
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.DarkGray,
+                                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                            )
+                        }
+
+                        items(movimientosDelMes, key = { it.id }) { movimiento ->
+                            TransaccionItem(
+                                transaccion = movimiento,
+                                onDelete = {
+                                    transaccionAEliminar = movimiento
+                                    showConfirmation = true
+                                }
+                            )
+                        }
                     }
                 }
+            } else {
+                val (titulo, descripcion) = when {
+                    todasLasTransacciones.isEmpty() -> Pair(
+                        "Sin movimientos aún",
+                        "Registra tu primer ingreso o gasto para ver tu historial aquí."
+                    )
+                    filtroSeleccionado == FiltroHistorial.INGRESOS -> Pair(
+                        "Sin ingresos",
+                        "Aún no tienes ingresos registrados. Tus ingresos aparecerán aquí."
+                    )
+                    filtroSeleccionado == FiltroHistorial.GASTOS -> Pair(
+                        "Sin gastos",
+                        "Aún no tienes gastos registrados. Tus gastos aparecerán aquí."
+                    )
+                    else -> Pair(
+                        "Sin movimientos",
+                        "No se encontraron movimientos con el filtro seleccionado."
+                    )
+                }
+                EmptyState(
+                    title = titulo,
+                    description = descripcion,
+                    modifier = Modifier.weight(1f)
+                )
             }
-        } else {
-            // Estado vacío contextual según el filtro seleccionado
-            val (titulo, descripcion) = when {
-                todasLasTransacciones.isEmpty() -> Pair(
-                    "Sin movimientos aún",
-                    "Registra tu primer ingreso o gasto para ver tu historial aquí."
-                )
-                filtroSeleccionado == FiltroHistorial.INGRESOS -> Pair(
-                    "Sin ingresos",
-                    "Aún no tienes ingresos registrados. Tus ingresos aparecerán aquí."
-                )
-                filtroSeleccionado == FiltroHistorial.GASTOS -> Pair(
-                    "Sin gastos",
-                    "Aún no tienes gastos registrados. Tus gastos aparecerán aquí."
-                )
-                else -> Pair(
-                    "Sin movimientos",
-                    "No se encontraron movimientos con el filtro seleccionado."
-                )
-            }
-            EmptyState(
-                title = titulo,
-                description = descripcion,
-                modifier = Modifier.weight(1f)
-            )
         }
     }
 }
