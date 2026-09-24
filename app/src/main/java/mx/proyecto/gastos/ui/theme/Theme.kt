@@ -26,6 +26,10 @@ private val DarkColorScheme = darkColorScheme(
     surface = BlackBackground,
     onSurface = Color.White,
 
+    //Color de las tarjetas en modo oscuro
+    surfaceVariant = Color(0xFF504F4F),
+    onSurfaceVariant = Color.White,
+
     error = Rojo,
 
     onError = Color.White
@@ -45,6 +49,10 @@ private val LightColorScheme = lightColorScheme(
 
     surface = Background,
     onSurface = TextColor,
+
+    //Color de las tarjetas en modo claro
+    surfaceVariant = Color(0xFFF0F0F0),
+    onSurfaceVariant = TextColor,
 
     error = Rojo,
 
