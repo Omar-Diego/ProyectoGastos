@@ -78,11 +78,11 @@ fun PasoMonto(
 
         Spacer(Modifier.weight(1f))
 
-        // Monto grande — azul oscuro ( Navy )
+        // Monto grande
         Text(
             text = montoCentavos.pesos(),
             style = MaterialTheme.typography.displayLarge,
-            color = if (montoValido) Color(0xFF0D1B4A)
+            color = if (montoValido) MaterialTheme.colorScheme.onBackground
                     else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f),
         )
 
@@ -97,8 +97,8 @@ fun PasoMonto(
             onClick = alContinuar,
             enabled = montoValido,
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF0D1B4A),
-                disabledContainerColor = Color(0xFF0D1B4A).copy(alpha = 0.4f),
+                containerColor = MaterialTheme.colorScheme.primary,
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
             ),
             modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
         ) {

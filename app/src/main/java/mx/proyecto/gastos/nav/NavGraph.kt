@@ -36,6 +36,10 @@ import androidx.compose.ui.geometry.Offset
 import mx.proyecto.gastos.ui.theme.AzulClaro
 import mx.proyecto.gastos.ui.theme.AzulPrincipal
 import mx.proyecto.gastos.ui.theme.TextColor
+import androidx.compose.foundation.isSystemInDarkTheme
+import mx.proyecto.gastos.ui.theme.AzulOscuroPrincipal
+import mx.proyecto.gastos.ui.theme.AzulOscuroSecundario
+import mx.proyecto.gastos.ui.theme.BarraNavegacionOscuro
 
 enum class Destino(val ruta: String, val etiqueta: String, val icono: ImageVector){
     RESUMEN(ruta = "resumen", etiqueta = "Resumen",  icono = Icons.Filled.Home),
@@ -74,13 +78,13 @@ fun App(repositorio: MovimientoRepository){
 }
 
 @Composable
-private fun BarraInferior(navController: NavHostController) {
+private fun BarraInferior(navController: NavHostController, darkTheme: Boolean = isSystemInDarkTheme()) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val rutaActual = backStackEntry?.destination?.route
-    val borderColor = Color.LightGray
+    val borderColor = if (darkTheme) Color.LightGray else Color(0xFF053394)
 
     NavigationBar(
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = if (!darkTheme) MaterialTheme.colorScheme.background else BarraNavegacionOscuro,
         modifier = Modifier
             .drawBehind{
                 val strokeWidth = 1.dp.toPx()
@@ -115,9 +119,9 @@ private fun BarraInferior(navController: NavHostController) {
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = AzulPrincipal,
-                    selectedTextColor = AzulPrincipal,
-                    indicatorColor = AzulClaro.copy(alpha = 0.2f),
+                    selectedIconColor = if (!darkTheme) AzulPrincipal else AzulOscuroPrincipal,
+                    selectedTextColor = if (!darkTheme) AzulPrincipal else AzulOscuroPrincipal,
+                    indicatorColor = if (!darkTheme) AzulClaro.copy(alpha = 0.2f) else AzulOscuroSecundario.copy(alpha = 0.2f),
 
                     unselectedIconColor = TextColor.copy(alpha = 0.5f),
                     unselectedTextColor = TextColor.copy(alpha = 0.5f)

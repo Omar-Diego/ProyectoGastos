@@ -21,6 +21,43 @@ val CategoriaSalario = Color(0xFF66B47B)
 val CategoriaCasa = Color(0xFF78EAE3)
 val CategoriaOtro = Color(0xFFB5EA78)
 
+//Colores del modo oscuro
+
+val BlackBackground = Color(0xFF000000)
+
+//Pantalla principal
+
+val AzulOscuroPrincipal = Color(0xFF1A305E)
+
+val AzulOscuroSecundario = Color(0xFF366386)
+
+val CuadroConGraficaDeBarras = Color(0xFF504F4F)
+
+val Subtitulos = Color(0xFFD7D7D7)
+
+val BarraNavegacionOscuro = Color(0xFFA3A3A3)
+
+val SeleccionNavegacion = Color(0x777D8789)
+
+//Historial
+
+val ContornoDeComprasYGastos = Color(0xFFCFCFCF)
+
+val ContornoDeCategoriaTodos = Color(0xFF1A305E)
+
+//Registro
+
+val ContornoDeGasto = Color(0xFF3A1B1B)
+
+val ContornoDeIngreso = Color(0xFF163314)
+
+val NumeroDeCantidad = Color(0xFF366386)
+
+val ContornoDeCalculadora = Color(0xFF656565)
+
+val ContornoDeEliminar = Color(0xFFAEAEAE)
+
+val ContornoDeContinuar = Color(0xFF1A305E)
 
 val Categoria.color: Color
     get() = when (this) {

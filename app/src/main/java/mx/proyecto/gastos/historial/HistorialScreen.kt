@@ -89,7 +89,7 @@ fun HistorialScreen(repositorio: MovimientoRepository) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         val isTablet = maxWidth >= 600.dp
@@ -116,12 +116,12 @@ fun HistorialScreen(repositorio: MovimientoRepository) {
                 Text(
                     text = "Historial",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Color.Black
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     text = "Todos tus movimientos en un lugar.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -146,7 +146,7 @@ fun HistorialScreen(repositorio: MovimientoRepository) {
                             Text(
                                 text = mes.replaceFirstChar { it.uppercase() },
                                 style = MaterialTheme.typography.titleMedium,
-                                color = Color.DarkGray,
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                             )
                         }

@@ -131,12 +131,12 @@ private fun Encabezado() {
         Text(
             text = "Resumen",
             style = MaterialTheme.typography.titleLarge,
-            color = TextColor
+            color = MaterialTheme.colorScheme.onBackground
         )
         Text(
             text = "Aqui tienes el resumen de tus finanzas.",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextColor.copy(alpha = 0.6f),
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
             modifier = Modifier.padding(top = 4.dp)
         )
     }
@@ -150,7 +150,7 @@ private fun TarjetaBalance(resumen: ResumenMes) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(AzulPrincipal)
+            .background(MaterialTheme.colorScheme.primary)
             .padding(20.dp)
     ) {
         Text(
@@ -186,7 +186,7 @@ private fun TarjetaBalance(resumen: ResumenMes) {
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(AzulClaro),
+                .background(MaterialTheme.colorScheme.primaryContainer),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             PillMonto(
@@ -237,18 +237,18 @@ private fun TarjetaHistorial(historial: List<ResumenMensual>) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(20.dp)
     ) {
         Text(
             text = "Ingresos vs gastos",
             style = MaterialTheme.typography.titleMedium,
-            color = TextColor
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = "Ultimos 6 meses",
             style = MaterialTheme.typography.bodySmall,
-            color = TextColor.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
         Spacer(Modifier.height(16.dp))
         GraficaBarras(historial)
@@ -267,18 +267,18 @@ private fun TarjetaSemanal(semanas: List<ResumenSemanal>) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(20.dp)
     ) {
         Text(
             text = "Ingresos vs gastos por semana",
             style = MaterialTheme.typography.titleMedium,
-            color = TextColor
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = "${MESES_COMPLETOS[hoy.monthValue - 1]} ${hoy.year}",
             style = MaterialTheme.typography.bodySmall,
-            color = TextColor.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
         Spacer(Modifier.height(16.dp))
         GraficaBarrasSemanal(semanas)
@@ -301,25 +301,25 @@ private fun ColumnScope.TarjetaCategorias(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(24.dp))
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(20.dp)
     ) {
         Text(
             text = "Gastos por categoria",
             style = MaterialTheme.typography.titleMedium,
-            color = TextColor
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = "${MESES_COMPLETOS[hoy.monthValue - 1]} ${hoy.year}",
             style = MaterialTheme.typography.bodySmall,
-            color = TextColor.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
         Spacer(Modifier.height(16.dp))
         if (gastosPorCategoria.isEmpty()) {
             Text(
                 text = "Sin gastos registrados este mes.",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
             )
         } else {
             Row(
