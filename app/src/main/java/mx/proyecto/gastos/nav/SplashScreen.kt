@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
 import mx.proyecto.gastos.R
 
-private const val DURACION_SPLASH_MS = 3000L
+private const val DURACION_SPLASH_MS = 400L
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
