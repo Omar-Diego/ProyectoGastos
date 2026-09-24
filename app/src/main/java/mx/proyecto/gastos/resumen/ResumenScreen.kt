@@ -3,6 +3,7 @@ package mx.proyecto.gastos.resumen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -70,41 +72,58 @@ fun ResumenScreen(
 private fun ResumenContenido(resumen: ResumenMes) {
     val esVacio = resumen.gastadoMesCentavos == 0L && resumen.ingresosMesCentavos == 0L
     
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(horizontal = 16.dp)
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
-        Spacer(Modifier.height(16.dp))
-        Encabezado()
-        Spacer(Modifier.height(24.dp))
-        
-        if (esVacio) {
-            EmptyState(
-                title = "Sin movimientos aún",
-                description = "Registra tu primer ingreso o gasto para ver tu resumen aquí.",
-                modifier = Modifier.weight(1f)
-            )
-        } else {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Spacer(Modifier.height(16.dp))
-                TarjetaBalance(resumen)
-                Spacer(Modifier.height(16.dp))
-                TarjetaHistorial(resumen.historialSeisMeses)
-                if (resumen.gastosPorCategoria.isNotEmpty()) {
+        val isTablet = maxWidth >= 600.dp
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .then(
+                    if (isTablet) Modifier.widthIn(max = 400.dp)
+                    else Modifier.fillMaxWidth()
+                )
+                .padding(horizontal = 16.dp)
+        ) {
+            Spacer(Modifier.height(16.dp))
+            Encabezado()
+            Spacer(Modifier.height(24.dp))
+            
+            if (esVacio) {
+                EmptyState(
+                    title = "Sin movimientos aún",
+                    description = "Registra tu primer ingreso o gasto para ver tu resumen aquí.",
+                    modifier = Modifier.weight(1f)
+                )
+            } else {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Spacer(Modifier.height(16.dp))
-                    TarjetaCategorias(resumen.gastosPorCategoria, resumen.gastadoMesCentavos)
+                    TarjetaBalance(resumen)
+                    Spacer(Modifier.height(16.dp))
+                    TarjetaHistorial(resumen.historialSeisMeses)
+                    if (resumen.gastosPorCategoria.isNotEmpty()) {
+                        Spacer(Modifier.height(16.dp))
+                        TarjetaCategorias(
+                            gastosPorCategoria = resumen.gastosPorCategoria,
+                            gastadoMesCentavos = resumen.gastadoMesCentavos,
+                            isTablet = isTablet
+                        )
+                    }
+                    Spacer(Modifier.height(24.dp))
                 }
-                Spacer(Modifier.height(24.dp))
             }
         }
     }
 }
+
 
 @Composable
 private fun Encabezado() {
@@ -274,7 +293,8 @@ private fun TarjetaSemanal(semanas: List<ResumenSemanal>) {
 @Composable
 private fun ColumnScope.TarjetaCategorias(
     gastosPorCategoria: List<GastoPorCategoria>,
-    gastadoMesCentavos: Long
+    gastadoMesCentavos: Long,
+    isTablet: Boolean
 ) {
     val hoy = LocalDate.now()
     Column(
@@ -302,7 +322,11 @@ private fun ColumnScope.TarjetaCategorias(
                 color = TextColor.copy(alpha = 0.5f)
             )
         } else {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = if (isTablet) Arrangement.Center else Arrangement.Start
+            ) {
                 Donut(
                     gastosPorCategoria = gastosPorCategoria,
                     totalCentavos = gastadoMesCentavos
@@ -317,6 +341,7 @@ private fun ColumnScope.TarjetaCategorias(
         }
     }
 }
+
 
 
 internal fun formatearMoneda(centavos: Long): String {

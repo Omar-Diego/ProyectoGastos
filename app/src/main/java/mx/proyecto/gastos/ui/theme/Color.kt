@@ -21,6 +21,7 @@ val CategoriaSalario = Color(0xFF66B47B)
 val CategoriaCasa = Color(0xFF78EAE3)
 val CategoriaOtro = Color(0xFFB5EA78)
 
+
 val Categoria.color: Color
     get() = when (this) {
         Categoria.COMIDA -> CategoriaComida
