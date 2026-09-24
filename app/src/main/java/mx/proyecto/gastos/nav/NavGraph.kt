@@ -41,6 +41,8 @@ import mx.proyecto.gastos.ui.theme.AzulOscuroPrincipal
 import mx.proyecto.gastos.ui.theme.AzulOscuroSecundario
 import mx.proyecto.gastos.ui.theme.BarraNavegacionOscuro
 
+const val RUTA_SPLASH = "splash"
+
 enum class Destino(val ruta: String, val etiqueta: String, val icono: ImageVector){
     RESUMEN(ruta = "resumen", etiqueta = "Resumen",  icono = Icons.Filled.Home),
     REGISTRO(ruta = "registro", etiqueta = "Registro", icono = Icons.Filled.Add),
@@ -50,14 +52,18 @@ enum class Destino(val ruta: String, val etiqueta: String, val icono: ImageVecto
 @Composable
 fun App(repositorio: MovimientoRepository){
     val navController = rememberNavController()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val enSplash = backStackEntry?.destination?.route == RUTA_SPLASH
+
     Scaffold(
-        bottomBar = {BarraInferior(navController)}
+        bottomBar = { if (!enSplash) BarraInferior(navController) }
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Destino.RESUMEN.ruta,
+            startDestination = RUTA_SPLASH,
             modifier = Modifier.padding(padding)
         ) {
+            composable(route = RUTA_SPLASH) { SplashScreen(navController) }
             composable(route = Destino.RESUMEN.ruta) {ResumenScreen(repositorio)}
             composable(route = Destino.REGISTRO.ruta) {
                 RegistroScreen(

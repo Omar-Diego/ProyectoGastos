@@ -39,7 +39,7 @@ fun mostrarNotificacionRecordatorio(context: Context) {
 
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || permisoConcedido) {
         val notificacion = NotificationCompat.Builder(context, CANAL_RECORDATORIOS_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .setContentTitle("No olvides registrar tus movimientos")
             .setContentText("Lleva el control de tus finanzas de hoy en un par de toques.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
